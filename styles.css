@@ -12,7 +12,6 @@
   --accent-soft: #ffe1d1;
   --focus: #4bb6cf;
   --good: #4cae76;
-  --warn: #f4a261;
   --selected: #ffe3bf;
   --related: #fff4d9;
   --same: #dff2ff;
@@ -22,7 +21,6 @@
   --shadow: 0 18px 50px rgba(44, 80, 96, 0.16);
   --radius-lg: 28px;
   --radius-md: 18px;
-  --radius-sm: 14px;
 }
 
 * {
@@ -166,12 +164,15 @@ h2 {
   padding-left: 1.2rem;
 }
 
+.course-options,
 .difficulty-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 12px;
 }
 
+.course-option,
 .difficulty-option,
 .header-button,
 .primary-button,
@@ -187,6 +188,7 @@ h2 {
   -webkit-tap-highlight-color: transparent;
 }
 
+.course-option,
 .difficulty-option,
 .header-button,
 .secondary-button,
@@ -197,6 +199,7 @@ h2 {
   box-shadow: inset 0 0 0 1px var(--line);
 }
 
+.course-option.is-selected,
 .difficulty-option.is-selected,
 .header-button.accent,
 .primary-button {
@@ -215,6 +218,62 @@ h2 {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.stat-card {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 1.15rem;
+}
+
+.stamp-book {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.stamp-chip {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 239, 214, 0.95), rgba(255, 249, 236, 0.95));
+  box-shadow: inset 0 0 0 1px rgba(245, 122, 66, 0.18);
+}
+
+.stamp-chip strong,
+.stamp-chip span {
+  display: block;
+}
+
+.stamp-chip strong {
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+
+.stamp-chip span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.stamp-empty {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--muted);
 }
 
 .game-header {
@@ -329,7 +388,7 @@ h2 {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--board-dimension, 9), minmax(0, 1fr));
   gap: 0;
   width: var(--board-size, min(100%, 620px));
   height: var(--board-size, auto);
@@ -392,15 +451,9 @@ h2 {
   padding: 8px;
 }
 
-.input-help {
-  margin: 10px 0 0;
-  font-size: 0.86rem;
-  line-height: 1.45;
-}
-
 .number-pad {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--pad-columns, 5), minmax(0, 1fr));
   gap: 6px;
   margin-bottom: 6px;
 }
@@ -442,6 +495,22 @@ h2 {
   color: var(--good);
 }
 
+.reward-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.reward-chip {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.course-option:active,
 .difficulty-option:active,
 .header-button:active,
 .primary-button:active,
@@ -452,6 +521,7 @@ h2 {
   transform: scale(0.98);
 }
 
+.course-option:focus-visible,
 .difficulty-option:focus-visible,
 .header-button:focus-visible,
 .primary-button:focus-visible,
@@ -519,12 +589,19 @@ body[data-orientation="landscape"] .control-column {
     padding: 10px;
   }
 
+  .course-options,
   .difficulty-options,
   .home-actions,
   .keypad-actions,
-  .modal-actions {
-    display: grid;
+  .modal-actions,
+  .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .course-options,
+  .difficulty-options,
+  .stats-grid {
+    display: grid;
   }
 
   .game-header {
@@ -554,6 +631,7 @@ body[data-orientation="landscape"] .control-column {
   .secondary-button,
   .primary-button,
   .ghost-button,
+  .course-option,
   .difficulty-option,
   .key-button {
     min-height: 48px;
@@ -561,10 +639,6 @@ body[data-orientation="landscape"] .control-column {
 
   .menu-panel {
     min-width: 180px;
-  }
-
-  .number-pad {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .time-chip {

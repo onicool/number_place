@@ -19,6 +19,28 @@
         </div>
 
         <div class="panel">
+          <h2>コース</h2>
+          <div class="course-options" role="radiogroup" aria-label="コース選択">
+            <button type="button" class="course-option is-selected" data-course="classic" aria-pressed="true">いつもの 9x9</button>
+            <button type="button" class="course-option" data-course="step" aria-pressed="false">ステップアップ 6x6</button>
+            <button type="button" class="course-option" data-course="mini" aria-pressed="false">れんしゅう 4x4</button>
+          </div>
+        </div>
+
+        <div id="difficulty-panel" class="panel">
+          <h2>むずかしさ</h2>
+          <div class="difficulty-options" role="radiogroup" aria-label="難易度選択">
+            <button type="button" class="difficulty-option is-selected" data-difficulty="easy" aria-pressed="true">かんたん</button>
+            <button type="button" class="difficulty-option" data-difficulty="normal" aria-pressed="false">ふつう</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>えらんだコース</h2>
+          <p id="selection-copy" class="support-text">空きマスが少なめで、進めやすい問題です。</p>
+        </div>
+
+        <div class="panel">
           <h2>あそびかた</h2>
           <ol class="steps">
             <li>マスをタップします</li>
@@ -29,24 +51,35 @@
         </div>
 
         <div class="panel">
-          <h2>むずかしさ</h2>
-          <div class="difficulty-options" role="radiogroup" aria-label="難易度選択">
-            <button type="button" class="difficulty-option is-selected" data-difficulty="easy" aria-pressed="true">かんたん</button>
-            <button type="button" class="difficulty-option" data-difficulty="normal" aria-pressed="false">ふつう</button>
+          <h2>きょうときろく</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="status-label">デイリー</span>
+              <strong id="daily-status">まだ</strong>
+            </div>
+            <div class="stat-card">
+              <span class="status-label">れんぞく</span>
+              <strong id="streak-count">0日</strong>
+            </div>
+            <div class="stat-card">
+              <span class="status-label">クリア</span>
+              <strong id="total-clears">0回</strong>
+            </div>
           </div>
-          <p id="difficulty-copy" class="support-text">空きマスが少なめで、進めやすい問題です。</p>
+          <div id="stamp-book" class="stamp-book" aria-live="polite"></div>
         </div>
 
         <div class="home-actions">
-          <button id="start-button" type="button" class="primary-button">はじめる</button>
-          <button id="continue-button" type="button" class="secondary-button">つづきから</button>
+          <button id="daily-button" type="button" class="primary-button">きょうの1もん: 9x9 かんたん</button>
+          <button id="start-button" type="button" class="secondary-button">じゆうにあそぶ</button>
+          <button id="continue-button" type="button" class="ghost-button">つづきから</button>
         </div>
       </section>
 
       <section id="game-screen" class="screen" aria-labelledby="game-title" hidden>
         <header class="game-header">
           <div class="game-title-group">
-            <p class="eyebrow">いまのゲーム</p>
+            <p id="game-subtitle" class="eyebrow">いまのゲーム</p>
             <h2 id="game-title">かんたん</h2>
           </div>
           <div class="header-meta">
@@ -59,13 +92,13 @@
               <strong id="remaining-cells">81</strong>
             </div>
             <details id="game-menu" class="game-menu">
-            <summary class="menu-summary">メニュー</summary>
-            <div class="menu-panel">
-              <button id="undo-button" type="button" class="header-button">もどす</button>
-              <button id="hint-button" type="button" class="header-button accent">ヒント</button>
-              <button id="home-button" type="button" class="header-button">ホーム</button>
-              <button id="new-game-button" type="button" class="header-button">あたらしくあそぶ</button>
-            </div>
+              <summary class="menu-summary">メニュー</summary>
+              <div class="menu-panel">
+                <button id="home-button" type="button" class="header-button">ホーム</button>
+                <button id="new-game-button" type="button" class="header-button">あたらしくあそぶ</button>
+                <button id="undo-button" type="button" class="header-button">もどす</button>
+                <button id="hint-button" type="button" class="header-button">ヒント</button>
+              </div>
             </details>
           </div>
         </header>
@@ -99,6 +132,8 @@
       <p class="eyebrow">クリア</p>
       <h2 id="clear-title">できた！</h2>
       <p id="clear-summary">最後までできました。</p>
+      <p id="clear-reward-copy" class="support-text">スタンプをふやしました。</p>
+      <div id="reward-list" class="reward-list"></div>
       <div class="modal-actions">
         <button id="play-again-button" type="button" class="primary-button">もういちど</button>
         <button id="modal-home-button" type="button" class="secondary-button">ホームへ</button>
