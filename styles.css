@@ -315,8 +315,11 @@ h2 {
 }
 
 .board-panel {
-  padding: 8px;
+  padding: 0;
   margin-bottom: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -331,8 +334,8 @@ h2 {
   height: var(--board-size, auto);
   max-width: 100%;
   margin: 0;
-  border: 3px solid var(--text);
-  border-radius: 24px;
+  border: 0;
+  border-radius: 0;
   overflow: hidden;
   background: #fff;
 }

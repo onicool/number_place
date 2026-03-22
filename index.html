@@ -19,7 +19,7 @@
         </div>
 
         <div class="panel">
-          <h2>How to Play</h2>
+          <h2>あそびかた</h2>
           <ol class="steps">
             <li>マスをタップします</li>
             <li>下の数字ボタンをタップします</li>
@@ -29,42 +29,42 @@
         </div>
 
         <div class="panel">
-          <h2>Difficulty</h2>
-          <div class="difficulty-options" role="radiogroup" aria-label="Difficulty">
-            <button type="button" class="difficulty-option is-selected" data-difficulty="easy" aria-pressed="true">Easy</button>
-            <button type="button" class="difficulty-option" data-difficulty="normal" aria-pressed="false">Normal</button>
+          <h2>むずかしさ</h2>
+          <div class="difficulty-options" role="radiogroup" aria-label="難易度選択">
+            <button type="button" class="difficulty-option is-selected" data-difficulty="easy" aria-pressed="true">かんたん</button>
+            <button type="button" class="difficulty-option" data-difficulty="normal" aria-pressed="false">ふつう</button>
           </div>
           <p id="difficulty-copy" class="support-text">空きマスが少なめで、進めやすい問題です。</p>
         </div>
 
         <div class="home-actions">
-          <button id="start-button" type="button" class="primary-button">Start</button>
-          <button id="continue-button" type="button" class="secondary-button">Continue</button>
+          <button id="start-button" type="button" class="primary-button">はじめる</button>
+          <button id="continue-button" type="button" class="secondary-button">つづきから</button>
         </div>
       </section>
 
       <section id="game-screen" class="screen" aria-labelledby="game-title" hidden>
         <header class="game-header">
           <div class="game-title-group">
-            <p class="eyebrow">Mode</p>
-            <h2 id="game-title">Easy</h2>
+            <p class="eyebrow">いまのゲーム</p>
+            <h2 id="game-title">かんたん</h2>
           </div>
           <div class="header-meta">
             <div class="time-chip">
-              <span class="status-label">Time</span>
+              <span class="status-label">じかん</span>
               <strong id="timer">00:00</strong>
             </div>
             <div class="time-chip progress-chip">
-              <span class="status-label">Remain</span>
+              <span class="status-label">のこり</span>
               <strong id="remaining-cells">81</strong>
             </div>
             <details id="game-menu" class="game-menu">
-            <summary class="menu-summary">Menu</summary>
+            <summary class="menu-summary">メニュー</summary>
             <div class="menu-panel">
-              <button id="undo-button" type="button" class="header-button">Undo</button>
-              <button id="hint-button" type="button" class="header-button accent">Hint</button>
-              <button id="home-button" type="button" class="header-button">Home</button>
-              <button id="new-game-button" type="button" class="header-button">New Game</button>
+              <button id="undo-button" type="button" class="header-button">もどす</button>
+              <button id="hint-button" type="button" class="header-button accent">ヒント</button>
+              <button id="home-button" type="button" class="header-button">ホーム</button>
+              <button id="new-game-button" type="button" class="header-button">あたらしくあそぶ</button>
             </div>
             </details>
           </div>
@@ -85,7 +85,7 @@
             <div class="keypad panel">
               <div id="number-pad" class="number-pad" aria-label="数字入力"></div>
               <div class="keypad-actions">
-                <button id="erase-button" type="button" class="secondary-button">Erase</button>
+                <button id="erase-button" type="button" class="secondary-button">けす</button>
               </div>
             </div>
           </aside>
@@ -96,12 +96,12 @@
 
   <div id="clear-modal" class="modal" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="clear-title">
-      <p class="eyebrow">Clear</p>
+      <p class="eyebrow">クリア</p>
       <h2 id="clear-title">できた！</h2>
       <p id="clear-summary">最後までできました。</p>
       <div class="modal-actions">
-        <button id="play-again-button" type="button" class="primary-button">Play Again</button>
-        <button id="modal-home-button" type="button" class="secondary-button">Home</button>
+        <button id="play-again-button" type="button" class="primary-button">もういちど</button>
+        <button id="modal-home-button" type="button" class="secondary-button">ホームへ</button>
       </div>
     </div>
   </div>

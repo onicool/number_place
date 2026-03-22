@@ -505,7 +505,7 @@
   }
 
   function renderHeader() {
-    elements.gameTitle.textContent = state.currentDifficulty === "easy" ? "Easy" : "Normal";
+    elements.gameTitle.textContent = state.currentDifficulty === "easy" ? "かんたん" : "ふつう";
     elements.remainingCells.textContent = String(getRemainingCellCount());
     elements.hintCount.textContent = String(state.hintCount);
     elements.selectedCellLabel.textContent = formatSelectedCellLabel();
