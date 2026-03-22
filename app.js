@@ -71,8 +71,12 @@
     numberPad: document.getElementById("number-pad"),
     messageText: document.getElementById("message-text"),
     timer: document.getElementById("timer"),
+    remainingCells: document.getElementById("remaining-cells"),
     hintCount: document.getElementById("hint-count"),
     selectedCellLabel: document.getElementById("selected-cell-label"),
+    rowRemaining: document.getElementById("row-remaining"),
+    colRemaining: document.getElementById("col-remaining"),
+    boxRemaining: document.getElementById("box-remaining"),
     gameTitle: document.getElementById("game-title"),
     gameMenu: document.getElementById("game-menu"),
     startButton: document.getElementById("start-button"),
@@ -263,8 +267,19 @@
       var button = document.createElement("button");
       button.type = "button";
       button.className = "key-button";
-      button.textContent = String(value);
       button.dataset.value = String(value);
+
+      var buttonValue = document.createElement("span");
+      buttonValue.className = "key-button-value";
+      buttonValue.textContent = String(value);
+
+      var buttonCount = document.createElement("span");
+      buttonCount.className = "key-button-count";
+      buttonCount.textContent = "あと 9";
+
+      button.appendChild(buttonValue);
+      button.appendChild(buttonCount);
+
       bindPress(button, function (event) {
         var target = event.currentTarget;
         applyEntry(Number(target.dataset.value));
@@ -494,11 +509,20 @@
 
   function renderHeader() {
     elements.gameTitle.textContent = state.currentDifficulty === "easy" ? "かんたん" : "ふつう";
+    elements.remainingCells.textContent = String(getRemainingCellCount());
     elements.hintCount.textContent = String(state.hintCount);
     elements.selectedCellLabel.textContent = formatSelectedCellLabel();
+    renderSelectionSummary();
     elements.undoButton.disabled = !state.history.length || state.cleared;
     elements.hintButton.disabled = !state.puzzle || state.cleared;
     elements.eraseButton.disabled = state.selectedIndex === null || state.cleared;
+  }
+
+  function renderSelectionSummary() {
+    var summary = getSelectionSummary();
+    elements.rowRemaining.textContent = summary.row;
+    elements.colRemaining.textContent = summary.col;
+    elements.boxRemaining.textContent = summary.box;
   }
 
   function renderBoard() {
@@ -533,13 +557,138 @@
   function renderNumberPad() {
     var buttons = elements.numberPad.children;
     var selectedValue = state.selectedIndex !== null ? state.board[state.selectedIndex] : 0;
+    var targetIndex = getEntryTargetIndex();
 
     for (var index = 0; index < buttons.length; index += 1) {
       var button = buttons[index];
       var value = Number(button.dataset.value);
+      var remainingCount = getRemainingCountForValue(value);
       button.classList.toggle("is-active", value === selectedValue && selectedValue !== 0);
+      button.classList.toggle("is-complete", remainingCount === 0);
+      button.classList.toggle("is-unavailable", isValueUnavailable(targetIndex, value));
+      button.querySelector(".key-button-count").textContent = remainingCount === 0 ? "そろった" : "あと " + remainingCount;
+      button.setAttribute("aria-label", buildKeyButtonLabel(value, remainingCount, targetIndex));
       button.disabled = !state.puzzle || state.cleared;
     }
+  }
+
+  function getRemainingCellCount() {
+    var remaining = 0;
+    for (var index = 0; index < state.board.length; index += 1) {
+      if (state.board[index] === 0) {
+        remaining += 1;
+      }
+    }
+    return remaining;
+  }
+
+  function getRemainingCountForValue(value) {
+    var used = 0;
+    for (var index = 0; index < state.board.length; index += 1) {
+      if (state.board[index] === value) {
+        used += 1;
+      }
+    }
+    return Math.max(0, 9 - used);
+  }
+
+  function getSelectionSummary() {
+    if (state.selectedIndex === null) {
+      return {
+        row: "-",
+        col: "-",
+        box: "-"
+      };
+    }
+
+    var row = Math.floor(state.selectedIndex / 9);
+    var col = state.selectedIndex % 9;
+
+    return {
+      row: "あと " + countEmptyInRow(row),
+      col: "あと " + countEmptyInColumn(col),
+      box: "あと " + countEmptyInBoxByIndex(state.selectedIndex)
+    };
+  }
+
+  function countEmptyInRow(row) {
+    var start = row * 9;
+    var empty = 0;
+    for (var offset = 0; offset < 9; offset += 1) {
+      if (state.board[start + offset] === 0) {
+        empty += 1;
+      }
+    }
+    return empty;
+  }
+
+  function countEmptyInColumn(col) {
+    var empty = 0;
+    for (var row = 0; row < 9; row += 1) {
+      if (state.board[(row * 9) + col] === 0) {
+        empty += 1;
+      }
+    }
+    return empty;
+  }
+
+  function countEmptyInBoxByIndex(index) {
+    var row = Math.floor(index / 9);
+    var col = index % 9;
+    var boxRow = Math.floor(row / 3) * 3;
+    var boxCol = Math.floor(col / 3) * 3;
+    var empty = 0;
+
+    for (var rowOffset = 0; rowOffset < 3; rowOffset += 1) {
+      for (var colOffset = 0; colOffset < 3; colOffset += 1) {
+        if (state.board[((boxRow + rowOffset) * 9) + boxCol + colOffset] === 0) {
+          empty += 1;
+        }
+      }
+    }
+
+    return empty;
+  }
+
+  function getEntryTargetIndex() {
+    if (state.selectedIndex === null || !state.puzzle || state.cleared || state.fixed[state.selectedIndex]) {
+      return null;
+    }
+    return state.selectedIndex;
+  }
+
+  function isValueUnavailable(index, value) {
+    if (index === null) {
+      return false;
+    }
+
+    return !canPlaceValueAt(index, value);
+  }
+
+  function canPlaceValueAt(index, value) {
+    if (!value) {
+      return true;
+    }
+
+    var peers = getPeerIndexes(index);
+    for (var i = 0; i < peers.length; i += 1) {
+      if (state.board[peers[i]] === value) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function buildKeyButtonLabel(value, remainingCount, targetIndex) {
+    var label = String(value) + " あと " + remainingCount;
+    if (remainingCount === 0) {
+      label = String(value) + " はそろっています";
+    }
+    if (isValueUnavailable(targetIndex, value)) {
+      label += " いまは入れられません";
+    }
+    return label;
   }
 
   function isRelatedToSelected(index) {

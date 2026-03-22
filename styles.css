@@ -285,6 +285,10 @@ h2 {
   box-shadow: inset 0 0 0 1px var(--line);
 }
 
+.progress-chip strong {
+  color: var(--accent-strong);
+}
+
 .status-label {
   display: block;
   margin-bottom: 2px;
@@ -380,6 +384,37 @@ h2 {
   padding: 8px;
 }
 
+.selection-summary {
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.selection-title {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.selection-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.selection-stat {
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.95);
+  box-shadow: inset 0 0 0 1px rgba(32, 64, 79, 0.08);
+}
+
+.selection-stat strong {
+  display: block;
+}
+
 .input-help {
   margin: 10px 0 0;
   font-size: 0.86rem;
@@ -395,13 +430,58 @@ h2 {
 
 .key-button {
   min-height: 44px;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   font-size: 1rem;
   font-weight: 700;
+}
+
+.key-button-value {
+  line-height: 1;
+}
+
+.key-button-count {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  line-height: 1.1;
 }
 
 .key-button.is-active {
   background: var(--accent-soft);
   box-shadow: inset 0 0 0 2px rgba(245, 122, 66, 0.4);
+}
+
+.key-button.is-complete {
+  background: #f3fbf5;
+  color: var(--good);
+}
+
+.key-button.is-complete .key-button-count {
+  color: var(--good);
+}
+
+.key-button.is-unavailable {
+  background: #f4f1eb;
+  color: rgba(32, 64, 79, 0.46);
+  box-shadow: inset 0 0 0 1px rgba(32, 64, 79, 0.08);
+}
+
+.key-button.is-unavailable .key-button-count {
+  color: rgba(84, 113, 129, 0.78);
+}
+
+.key-button.is-active.is-unavailable {
+  background: linear-gradient(180deg, #ffe9d7, #ffe1d1);
+  color: var(--accent-strong);
+}
+
+.key-button.is-active.is-unavailable .key-button-count {
+  color: var(--accent-strong);
 }
 
 .difficulty-option:active,
@@ -494,6 +574,7 @@ body[data-orientation="landscape"] .control-column {
 
   .header-meta {
     align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .cell {
@@ -515,6 +596,10 @@ body[data-orientation="landscape"] .control-column {
 
   .number-pad {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .selection-stats {
+    grid-template-columns: 1fr;
   }
 
   .key-button,

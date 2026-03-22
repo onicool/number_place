@@ -54,6 +54,10 @@
               <span class="status-label">じかん</span>
               <strong id="timer">00:00</strong>
             </div>
+            <div class="time-chip progress-chip">
+              <span class="status-label">のこり</span>
+              <strong id="remaining-cells">81</strong>
+            </div>
           <details id="game-menu" class="game-menu">
             <summary class="menu-summary">メニュー</summary>
             <div class="menu-panel">
@@ -79,6 +83,23 @@
 
           <aside id="control-column" class="control-column">
             <div class="keypad panel">
+              <div id="selection-summary" class="selection-summary" aria-live="polite">
+                <p class="selection-title">えらんだマスのようす</p>
+                <div class="selection-stats">
+                  <div class="selection-stat">
+                    <span class="status-label">ぎょう</span>
+                    <strong id="row-remaining">-</strong>
+                  </div>
+                  <div class="selection-stat">
+                    <span class="status-label">れつ</span>
+                    <strong id="col-remaining">-</strong>
+                  </div>
+                  <div class="selection-stat">
+                    <span class="status-label">3x3</span>
+                    <strong id="box-remaining">-</strong>
+                  </div>
+                </div>
+              </div>
               <div id="number-pad" class="number-pad" aria-label="数字入力"></div>
               <div class="keypad-actions">
                 <button id="erase-button" type="button" class="secondary-button">けす</button>
