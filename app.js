@@ -59,6 +59,8 @@
   };
 
   var elements = {
+    appShell: document.querySelector(".app-shell"),
+    appCard: document.querySelector(".app-card"),
     homeScreen: document.getElementById("home-screen"),
     gameScreen: document.getElementById("game-screen"),
     board: document.getElementById("board"),
@@ -85,11 +87,45 @@
   function setup() {
     bindDifficultyOptions();
     bindButtons();
+    bindViewportEvents();
     createBoard();
     createNumberPad();
     refreshContinueButton();
     applyDifficultyCopy();
     render();
+    scheduleViewportFit();
+  }
+
+  function bindViewportEvents() {
+    window.addEventListener("resize", scheduleViewportFit);
+    window.addEventListener("orientationchange", scheduleViewportFit);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", scheduleViewportFit);
+      window.visualViewport.addEventListener("scroll", scheduleViewportFit);
+    }
+  }
+
+  function scheduleViewportFit() {
+    window.requestAnimationFrame(syncViewportFit);
+  }
+
+  function syncViewportFit() {
+    var viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    var viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.documentElement.style.setProperty("--app-viewport-height", viewportHeight + "px");
+
+    elements.appCard.style.setProperty("--app-scale", "1");
+
+    var shellStyles = window.getComputedStyle(elements.appShell);
+    var horizontalPadding = parseFloat(shellStyles.paddingLeft) + parseFloat(shellStyles.paddingRight);
+    var verticalPadding = parseFloat(shellStyles.paddingTop) + parseFloat(shellStyles.paddingBottom);
+    var availableWidth = Math.max(280, viewportWidth - horizontalPadding);
+    var availableHeight = Math.max(280, viewportHeight - verticalPadding);
+    var naturalWidth = elements.appCard.offsetWidth;
+    var naturalHeight = elements.appCard.offsetHeight;
+    var scale = Math.min(1, availableWidth / naturalWidth, availableHeight / naturalHeight);
+
+    elements.appCard.style.setProperty("--app-scale", scale.toFixed(4));
   }
 
   function bindDifficultyOptions() {
@@ -418,6 +454,7 @@
     renderHeader();
     renderBoard();
     renderNumberPad();
+    scheduleViewportFit();
   }
 
   function focusSelectedCell() {
@@ -529,6 +566,7 @@
     elements.gameScreen.hidden = showHome;
     elements.homeScreen.classList.toggle("screen-active", showHome);
     elements.gameScreen.classList.toggle("screen-active", !showHome);
+    scheduleViewportFit();
     if (!showHome) {
       window.setTimeout(focusSelectedCell, 0);
     }
@@ -770,10 +808,12 @@
   function showClearModal() {
     elements.clearSummary.textContent = formatTime(getElapsedSeconds()) + " でクリアしました。ヒントは " + state.hintCount + " 回です。";
     elements.clearModal.hidden = false;
+    scheduleViewportFit();
   }
 
   function hideClearModal() {
     elements.clearModal.hidden = true;
+    scheduleViewportFit();
   }
 
   setup();

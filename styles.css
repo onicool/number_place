@@ -43,6 +43,7 @@ body {
 
 body {
   touch-action: manipulation;
+  overflow: hidden;
 }
 
 button {
@@ -54,8 +55,13 @@ button {
 }
 
 .app-shell {
-  min-height: 100vh;
+  min-height: var(--app-viewport-height, 100dvh);
+  height: var(--app-viewport-height, 100dvh);
   padding: calc(20px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .app-card {
@@ -67,6 +73,8 @@ button {
   background: var(--card);
   box-shadow: var(--shadow);
   backdrop-filter: blur(12px);
+  transform: scale(var(--app-scale, 1));
+  transform-origin: top center;
 }
 
 .screen {
