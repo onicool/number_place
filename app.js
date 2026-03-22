@@ -546,7 +546,6 @@
   function renderNumberPad() {
     var buttons = elements.numberPad.children;
     var selectedValue = state.selectedIndex !== null ? state.board[state.selectedIndex] : 0;
-    var targetIndex = getEntryTargetIndex();
 
     for (var index = 0; index < buttons.length; index += 1) {
       var button = buttons[index];
@@ -554,9 +553,8 @@
       var remainingCount = getRemainingCountForValue(value);
       button.classList.toggle("is-active", value === selectedValue && selectedValue !== 0);
       button.classList.toggle("is-complete", remainingCount === 0);
-      button.classList.toggle("is-unavailable", isValueUnavailable(targetIndex, value));
       button.querySelector(".key-button-count").textContent = remainingCount === 0 ? "そろった" : "あと " + remainingCount;
-      button.setAttribute("aria-label", buildKeyButtonLabel(value, remainingCount, targetIndex));
+      button.setAttribute("aria-label", buildKeyButtonLabel(value, remainingCount));
       button.disabled = !state.puzzle || state.cleared;
     }
   }
@@ -581,44 +579,10 @@
     return Math.max(0, 9 - used);
   }
 
-
-  function getEntryTargetIndex() {
-    if (state.selectedIndex === null || !state.puzzle || state.cleared || state.fixed[state.selectedIndex]) {
-      return null;
-    }
-    return state.selectedIndex;
-  }
-
-  function isValueUnavailable(index, value) {
-    if (index === null) {
-      return false;
-    }
-
-    return !canPlaceValueAt(index, value);
-  }
-
-  function canPlaceValueAt(index, value) {
-    if (!value) {
-      return true;
-    }
-
-    var peers = getPeerIndexes(index);
-    for (var i = 0; i < peers.length; i += 1) {
-      if (state.board[peers[i]] === value) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  function buildKeyButtonLabel(value, remainingCount, targetIndex) {
+  function buildKeyButtonLabel(value, remainingCount) {
     var label = String(value) + " あと " + remainingCount;
     if (remainingCount === 0) {
       label = String(value) + " はそろっています";
-    }
-    if (isValueUnavailable(targetIndex, value)) {
-      label += " いまは入れられません";
     }
     return label;
   }
