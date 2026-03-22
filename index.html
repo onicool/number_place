@@ -45,38 +45,31 @@
 
       <section id="game-screen" class="screen" aria-labelledby="game-title" hidden>
         <header class="game-header">
-          <div>
+          <div class="game-title-group">
             <p class="eyebrow">いまのゲーム</p>
             <h2 id="game-title">かんたん</h2>
           </div>
+          <div class="header-meta">
+            <div class="time-chip">
+              <span class="status-label">じかん</span>
+              <strong id="timer">00:00</strong>
+            </div>
           <details id="game-menu" class="game-menu">
             <summary class="menu-summary">メニュー</summary>
             <div class="menu-panel">
+              <button id="undo-button" type="button" class="header-button">もどす</button>
+              <button id="hint-button" type="button" class="header-button accent">ヒント</button>
               <button id="home-button" type="button" class="header-button">ホーム</button>
               <button id="new-game-button" type="button" class="header-button">あたらしくあそぶ</button>
             </div>
           </details>
+          </div>
         </header>
 
-        <div class="game-toolbar panel compact-panel">
-          <button id="undo-button" type="button" class="header-button">もどす</button>
-          <button id="hint-button" type="button" class="header-button accent">ヒント</button>
-          <div>
-            <span class="status-label">じかん</span>
-            <strong id="timer">00:00</strong>
-          </div>
-          <div>
-            <span class="status-label">ヒント</span>
-            <strong id="hint-count">0</strong>
-          </div>
-          <div>
-            <span class="status-label">えらんだマス</span>
-            <strong id="selected-cell-label">なし</strong>
-          </div>
-        </div>
-
-        <div class="message-strip" aria-live="polite">
+        <div class="sr-only" aria-live="polite">
           <p id="message-text">マスをえらんで、数字を入れてみよう。</p>
+          <span id="hint-count">0</span>
+          <span id="selected-cell-label">なし</span>
         </div>
 
         <div id="game-main" class="game-main">
@@ -91,11 +84,6 @@
                 <button id="erase-button" type="button" class="secondary-button">けす</button>
               </div>
             </div>
-
-            <details class="input-guide panel">
-              <summary class="guide-summary">入力ガイド</summary>
-              <p class="input-help">キーボード: 1-9 で入力 / 矢印で移動 / Delete で消す / Ctrl+Z でもどす / H でヒント</p>
-            </details>
           </aside>
         </div>
       </section>

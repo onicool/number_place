@@ -64,14 +64,12 @@
     homeScreen: document.getElementById("home-screen"),
     gameScreen: document.getElementById("game-screen"),
     gameHeader: document.querySelector(".game-header"),
-    gameToolbar: document.querySelector(".game-toolbar"),
     gameMain: document.getElementById("game-main"),
     boardWrap: document.getElementById("board-wrap"),
     controlColumn: document.getElementById("control-column"),
     board: document.getElementById("board"),
     numberPad: document.getElementById("number-pad"),
     messageText: document.getElementById("message-text"),
-    messageStrip: document.querySelector(".message-strip"),
     timer: document.getElementById("timer"),
     hintCount: document.getElementById("hint-count"),
     selectedCellLabel: document.getElementById("selected-cell-label"),
@@ -133,7 +131,9 @@
     var gameMainRect = elements.gameMain.getBoundingClientRect();
     var controlRect = elements.controlColumn.getBoundingClientRect();
     var gap = parseFloat(window.getComputedStyle(elements.gameMain).gap) || 0;
-    var availableBoardWidth = isLandscape ? gameMainRect.width - controlRect.width - gap : gameMainRect.width;
+    var boardWrapStyles = window.getComputedStyle(elements.boardWrap);
+    var boardWrapHorizontalPadding = parseFloat(boardWrapStyles.paddingLeft) + parseFloat(boardWrapStyles.paddingRight);
+    var availableBoardWidth = isLandscape ? gameMainRect.width - controlRect.width - gap - boardWrapHorizontalPadding : gameMainRect.width - boardWrapHorizontalPadding;
     var availableBoardHeight = isLandscape ? gameMainRect.height : gameMainRect.height - controlRect.height - gap;
     var boardSize = Math.floor(Math.max(0, Math.min(availableBoardWidth, availableBoardHeight)));
 
