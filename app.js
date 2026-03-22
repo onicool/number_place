@@ -63,13 +63,20 @@
     appCard: document.querySelector(".app-card"),
     homeScreen: document.getElementById("home-screen"),
     gameScreen: document.getElementById("game-screen"),
+    gameHeader: document.querySelector(".game-header"),
+    gameToolbar: document.querySelector(".game-toolbar"),
+    gameMain: document.getElementById("game-main"),
+    boardWrap: document.getElementById("board-wrap"),
+    controlColumn: document.getElementById("control-column"),
     board: document.getElementById("board"),
     numberPad: document.getElementById("number-pad"),
     messageText: document.getElementById("message-text"),
+    messageStrip: document.querySelector(".message-strip"),
     timer: document.getElementById("timer"),
     hintCount: document.getElementById("hint-count"),
     selectedCellLabel: document.getElementById("selected-cell-label"),
     gameTitle: document.getElementById("game-title"),
+    gameMenu: document.getElementById("game-menu"),
     startButton: document.getElementById("start-button"),
     continueButton: document.getElementById("continue-button"),
     homeButton: document.getElementById("home-button"),
@@ -112,20 +119,29 @@
   function syncViewportFit() {
     var viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
     var viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    var isLandscape = viewportWidth > viewportHeight;
+
+    document.body.dataset.orientation = isLandscape ? "landscape" : "portrait";
     document.documentElement.style.setProperty("--app-viewport-height", viewportHeight + "px");
 
-    elements.appCard.style.setProperty("--app-scale", "1");
+    if (elements.gameScreen.hidden) {
+      return;
+    }
 
-    var shellStyles = window.getComputedStyle(elements.appShell);
-    var horizontalPadding = parseFloat(shellStyles.paddingLeft) + parseFloat(shellStyles.paddingRight);
-    var verticalPadding = parseFloat(shellStyles.paddingTop) + parseFloat(shellStyles.paddingBottom);
-    var availableWidth = Math.max(280, viewportWidth - horizontalPadding);
-    var availableHeight = Math.max(280, viewportHeight - verticalPadding);
-    var naturalWidth = elements.appCard.offsetWidth;
-    var naturalHeight = elements.appCard.offsetHeight;
-    var scale = Math.min(1, availableWidth / naturalWidth, availableHeight / naturalHeight);
+    document.documentElement.style.removeProperty("--board-size");
 
-    elements.appCard.style.setProperty("--app-scale", scale.toFixed(4));
+    var gameMainRect = elements.gameMain.getBoundingClientRect();
+    var controlRect = elements.controlColumn.getBoundingClientRect();
+    var gap = parseFloat(window.getComputedStyle(elements.gameMain).gap) || 0;
+    var availableBoardWidth = isLandscape ? gameMainRect.width - controlRect.width - gap : gameMainRect.width;
+    var availableBoardHeight = isLandscape ? gameMainRect.height : gameMainRect.height - controlRect.height - gap;
+    var boardSize = Math.floor(Math.max(0, Math.min(availableBoardWidth, availableBoardHeight)));
+
+    if (!Number.isFinite(boardSize) || boardSize <= 0) {
+      return;
+    }
+
+    document.documentElement.style.setProperty("--board-size", boardSize + "px");
   }
 
   function bindDifficultyOptions() {
@@ -159,6 +175,7 @@
       switchScreen("home");
       refreshContinueButton();
       setMessage("ホームにもどりました。", true);
+      closeGameMenu();
     });
 
     bindPress(elements.hintButton, giveHint);
@@ -168,6 +185,7 @@
     });
     bindPress(elements.newGameButton, function () {
       startNewGame(state.currentDifficulty);
+      closeGameMenu();
     });
 
     bindPress(elements.playAgainButton, function () {
@@ -465,6 +483,12 @@
     var cell = elements.board.children[state.selectedIndex];
     if (cell && document.activeElement !== cell) {
       cell.focus({ preventScroll: true });
+    }
+  }
+
+  function closeGameMenu() {
+    if (elements.gameMenu) {
+      elements.gameMenu.open = false;
     }
   }
 

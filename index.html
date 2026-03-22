@@ -49,14 +49,18 @@
             <p class="eyebrow">いまのゲーム</p>
             <h2 id="game-title">かんたん</h2>
           </div>
-          <div class="header-actions">
-            <button id="home-button" type="button" class="header-button">ホーム</button>
-            <button id="undo-button" type="button" class="header-button">ひとつもどす</button>
-            <button id="hint-button" type="button" class="header-button accent">ヒント</button>
-          </div>
+          <details id="game-menu" class="game-menu">
+            <summary class="menu-summary">メニュー</summary>
+            <div class="menu-panel">
+              <button id="home-button" type="button" class="header-button">ホーム</button>
+              <button id="new-game-button" type="button" class="header-button">あたらしくあそぶ</button>
+            </div>
+          </details>
         </header>
 
-        <div class="status-bar panel compact-panel">
+        <div class="game-toolbar panel compact-panel">
+          <button id="undo-button" type="button" class="header-button">もどす</button>
+          <button id="hint-button" type="button" class="header-button accent">ヒント</button>
           <div>
             <span class="status-label">じかん</span>
             <strong id="timer">00:00</strong>
@@ -75,17 +79,24 @@
           <p id="message-text">マスをえらんで、数字を入れてみよう。</p>
         </div>
 
-        <div class="board-wrap panel board-panel">
-          <div id="board" class="board" role="grid" aria-label="ナンプレの盤面"></div>
-        </div>
-
-        <div class="keypad panel">
-          <div id="number-pad" class="number-pad" aria-label="数字入力"></div>
-          <div class="keypad-actions">
-            <button id="erase-button" type="button" class="secondary-button">けす</button>
-            <button id="new-game-button" type="button" class="ghost-button">あたらしくあそぶ</button>
+        <div id="game-main" class="game-main">
+          <div id="board-wrap" class="board-wrap panel board-panel">
+            <div id="board" class="board" role="grid" aria-label="ナンプレの盤面"></div>
           </div>
-          <p class="input-help">キーボード: 1-9 で入力 / 矢印で移動 / Delete で消す / Ctrl+Z でもどす / H でヒント</p>
+
+          <aside id="control-column" class="control-column">
+            <div class="keypad panel">
+              <div id="number-pad" class="number-pad" aria-label="数字入力"></div>
+              <div class="keypad-actions">
+                <button id="erase-button" type="button" class="secondary-button">けす</button>
+              </div>
+            </div>
+
+            <details class="input-guide panel">
+              <summary class="guide-summary">入力ガイド</summary>
+              <p class="input-help">キーボード: 1-9 で入力 / 矢印で移動 / Delete で消す / Ctrl+Z でもどす / H でヒント</p>
+            </details>
+          </aside>
         </div>
       </section>
     </main>
