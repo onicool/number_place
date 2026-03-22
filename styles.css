@@ -219,13 +219,14 @@ h2 {
 
 .game-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   min-height: 0;
 }
 
 .game-title-group {
+  flex: 1;
   min-width: 0;
 }
 
@@ -236,7 +237,9 @@ h2 {
 .header-meta {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 10px;
+  white-space: nowrap;
 }
 
 .game-menu {
@@ -257,6 +260,7 @@ h2 {
   box-shadow: inset 0 0 0 1px var(--line);
   color: var(--text);
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .menu-summary::-webkit-details-marker {
@@ -278,8 +282,8 @@ h2 {
 }
 
 .time-chip {
-  min-width: 88px;
-  padding: 8px 10px;
+  min-width: 74px;
+  padding: 7px 8px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.78);
   box-shadow: inset 0 0 0 1px var(--line);
@@ -382,37 +386,6 @@ h2 {
   margin-top: 0;
   margin-bottom: 0;
   padding: 8px;
-}
-
-.selection-summary {
-  margin-bottom: 8px;
-  padding: 10px 12px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-
-.selection-title {
-  margin: 0 0 8px;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.selection-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.selection-stat {
-  padding: 8px;
-  border-radius: 14px;
-  background: rgba(255, 250, 240, 0.95);
-  box-shadow: inset 0 0 0 1px rgba(32, 64, 79, 0.08);
-}
-
-.selection-stat strong {
-  display: block;
 }
 
 .input-help {
@@ -534,7 +507,16 @@ body[data-orientation="landscape"] .control-column {
 
 @media (max-width: 860px) {
   .header-meta {
-    gap: 8px;
+    gap: 6px;
+  }
+
+  .time-chip {
+    min-width: 68px;
+    padding: 6px 7px;
+  }
+
+  .menu-summary {
+    padding: 9px 12px;
   }
 }
 
@@ -574,7 +556,8 @@ body[data-orientation="landscape"] .control-column {
 
   .header-meta {
     align-items: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 4px;
   }
 
   .cell {
@@ -598,8 +581,19 @@ body[data-orientation="landscape"] .control-column {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
-  .selection-stats {
-    grid-template-columns: 1fr;
+  .time-chip {
+    min-width: 60px;
+    padding: 6px;
+  }
+
+  .status-label {
+    font-size: 0.72rem;
+  }
+
+  .menu-summary {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 0.92rem;
   }
 
   .key-button,

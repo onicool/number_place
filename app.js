@@ -74,9 +74,6 @@
     remainingCells: document.getElementById("remaining-cells"),
     hintCount: document.getElementById("hint-count"),
     selectedCellLabel: document.getElementById("selected-cell-label"),
-    rowRemaining: document.getElementById("row-remaining"),
-    colRemaining: document.getElementById("col-remaining"),
-    boxRemaining: document.getElementById("box-remaining"),
     gameTitle: document.getElementById("game-title"),
     gameMenu: document.getElementById("game-menu"),
     startButton: document.getElementById("start-button"),
@@ -508,21 +505,13 @@
   }
 
   function renderHeader() {
-    elements.gameTitle.textContent = state.currentDifficulty === "easy" ? "かんたん" : "ふつう";
+    elements.gameTitle.textContent = state.currentDifficulty === "easy" ? "Easy" : "Normal";
     elements.remainingCells.textContent = String(getRemainingCellCount());
     elements.hintCount.textContent = String(state.hintCount);
     elements.selectedCellLabel.textContent = formatSelectedCellLabel();
-    renderSelectionSummary();
     elements.undoButton.disabled = !state.history.length || state.cleared;
     elements.hintButton.disabled = !state.puzzle || state.cleared;
     elements.eraseButton.disabled = state.selectedIndex === null || state.cleared;
-  }
-
-  function renderSelectionSummary() {
-    var summary = getSelectionSummary();
-    elements.rowRemaining.textContent = summary.row;
-    elements.colRemaining.textContent = summary.col;
-    elements.boxRemaining.textContent = summary.box;
   }
 
   function renderBoard() {
@@ -592,63 +581,6 @@
     return Math.max(0, 9 - used);
   }
 
-  function getSelectionSummary() {
-    if (state.selectedIndex === null) {
-      return {
-        row: "-",
-        col: "-",
-        box: "-"
-      };
-    }
-
-    var row = Math.floor(state.selectedIndex / 9);
-    var col = state.selectedIndex % 9;
-
-    return {
-      row: "あと " + countEmptyInRow(row),
-      col: "あと " + countEmptyInColumn(col),
-      box: "あと " + countEmptyInBoxByIndex(state.selectedIndex)
-    };
-  }
-
-  function countEmptyInRow(row) {
-    var start = row * 9;
-    var empty = 0;
-    for (var offset = 0; offset < 9; offset += 1) {
-      if (state.board[start + offset] === 0) {
-        empty += 1;
-      }
-    }
-    return empty;
-  }
-
-  function countEmptyInColumn(col) {
-    var empty = 0;
-    for (var row = 0; row < 9; row += 1) {
-      if (state.board[(row * 9) + col] === 0) {
-        empty += 1;
-      }
-    }
-    return empty;
-  }
-
-  function countEmptyInBoxByIndex(index) {
-    var row = Math.floor(index / 9);
-    var col = index % 9;
-    var boxRow = Math.floor(row / 3) * 3;
-    var boxCol = Math.floor(col / 3) * 3;
-    var empty = 0;
-
-    for (var rowOffset = 0; rowOffset < 3; rowOffset += 1) {
-      for (var colOffset = 0; colOffset < 3; colOffset += 1) {
-        if (state.board[((boxRow + rowOffset) * 9) + boxCol + colOffset] === 0) {
-          empty += 1;
-        }
-      }
-    }
-
-    return empty;
-  }
 
   function getEntryTargetIndex() {
     if (state.selectedIndex === null || !state.puzzle || state.cleared || state.fixed[state.selectedIndex]) {
