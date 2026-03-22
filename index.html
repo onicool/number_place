@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Number Place</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <main class="app-card">
+      <section id="home-screen" class="screen screen-active" aria-labelledby="app-title">
+        <div class="hero">
+          <p class="eyebrow">iPad / Safari / Chrome</p>
+          <h1 id="app-title">Number Place</h1>
+          <p class="lead">大きく押せて、すぐ分かる。子供向けのやさしいナンプレ。</p>
+        </div>
+
+        <div class="panel">
+          <h2>あそびかた</h2>
+          <ol class="steps">
+            <li>マスをタップします</li>
+            <li>下の数字ボタンをタップします</li>
+            <li>同じ数字がぶつかると色で分かります</li>
+            <li>Apple Pencil とキーボードでも操作できます</li>
+          </ol>
+        </div>
+
+        <div class="panel">
+          <h2>むずかしさ</h2>
+          <div class="difficulty-options" role="radiogroup" aria-label="難易度選択">
+            <button type="button" class="difficulty-option is-selected" data-difficulty="easy" aria-pressed="true">かんたん</button>
+            <button type="button" class="difficulty-option" data-difficulty="normal" aria-pressed="false">ふつう</button>
+          </div>
+          <p id="difficulty-copy" class="support-text">空きマスが少なめで、進めやすい問題です。</p>
+        </div>
+
+        <div class="home-actions">
+          <button id="start-button" type="button" class="primary-button">はじめる</button>
+          <button id="continue-button" type="button" class="secondary-button">つづきから</button>
+        </div>
+      </section>
+
+      <section id="game-screen" class="screen" aria-labelledby="game-title" hidden>
+        <header class="game-header">
+          <div>
+            <p class="eyebrow">いまのゲーム</p>
+            <h2 id="game-title">かんたん</h2>
+          </div>
+          <div class="header-actions">
+            <button id="home-button" type="button" class="header-button">ホーム</button>
+            <button id="undo-button" type="button" class="header-button">ひとつもどす</button>
+            <button id="hint-button" type="button" class="header-button accent">ヒント</button>
+          </div>
+        </header>
+
+        <div class="status-bar panel compact-panel">
+          <div>
+            <span class="status-label">じかん</span>
+            <strong id="timer">00:00</strong>
+          </div>
+          <div>
+            <span class="status-label">ヒント</span>
+            <strong id="hint-count">0</strong>
+          </div>
+          <div>
+            <span class="status-label">えらんだマス</span>
+            <strong id="selected-cell-label">なし</strong>
+          </div>
+        </div>
+
+        <div class="message-strip" aria-live="polite">
+          <p id="message-text">マスをえらんで、数字を入れてみよう。</p>
+        </div>
+
+        <div class="board-wrap panel board-panel">
+          <div id="board" class="board" role="grid" aria-label="ナンプレの盤面"></div>
+        </div>
+
+        <div class="keypad panel">
+          <div id="number-pad" class="number-pad" aria-label="数字入力"></div>
+          <div class="keypad-actions">
+            <button id="erase-button" type="button" class="secondary-button">けす</button>
+            <button id="new-game-button" type="button" class="ghost-button">あたらしくあそぶ</button>
+          </div>
+          <p class="input-help">キーボード: 1-9 で入力 / 矢印で移動 / Delete で消す / Ctrl+Z でもどす / H でヒント</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="clear-modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="clear-title">
+      <p class="eyebrow">クリア</p>
+      <h2 id="clear-title">できた！</h2>
+      <p id="clear-summary">最後までできました。</p>
+      <div class="modal-actions">
+        <button id="play-again-button" type="button" class="primary-button">もういちど</button>
+        <button id="modal-home-button" type="button" class="secondary-button">ホームへ</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
