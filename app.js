@@ -121,6 +121,7 @@
   var elements = {
     homeScreen: document.getElementById("home-screen"),
     gameScreen: document.getElementById("game-screen"),
+    fullscreenToggleButton: document.getElementById("fullscreen-toggle-button"),
     gameMain: document.getElementById("game-main"),
     boardWrap: document.getElementById("board-wrap"),
     controlColumn: document.getElementById("control-column"),
@@ -161,6 +162,7 @@
     bindDifficultyOptions();
     bindButtons();
     bindViewportEvents();
+    bindFullscreenEvents();
     syncSelectionButtons();
     refreshContinueButton();
     renderHomeProgress();
@@ -265,6 +267,10 @@
       closeGameMenu();
     });
 
+    bindPress(elements.fullscreenToggleButton, function () {
+      toggleFullscreen();
+    });
+
     bindPress(elements.playAgainButton, function () {
       hideClearModal();
       startNewGame(state.gameKey || getSelectedGameKey(), state.isDaily);
@@ -280,6 +286,78 @@
 
     window.addEventListener("keydown", handleGlobalKeydown);
     window.addEventListener("beforeunload", saveGame);
+  }
+
+  function bindFullscreenEvents() {
+    document.addEventListener("fullscreenchange", syncFullscreenUi);
+    document.addEventListener("webkitfullscreenchange", syncFullscreenUi);
+    syncFullscreenUi();
+  }
+
+  function canUseFullscreen() {
+    var root = document.documentElement;
+    return Boolean(root.requestFullscreen || root.webkitRequestFullscreen);
+  }
+
+  function isFullscreenActive() {
+    return Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+  }
+
+  function requestAppFullscreen() {
+    var root = document.documentElement;
+    var requestMethod = root.requestFullscreen || root.webkitRequestFullscreen;
+
+    if (!requestMethod || isFullscreenActive()) {
+      return;
+    }
+
+    try {
+      requestMethod.call(root);
+    } catch (error) {
+      syncFullscreenUi();
+    }
+  }
+
+  function exitAppFullscreen() {
+    var exitMethod = document.exitFullscreen || document.webkitExitFullscreen;
+
+    if (!exitMethod || !isFullscreenActive()) {
+      return;
+    }
+
+    try {
+      exitMethod.call(document);
+    } catch (error) {
+      syncFullscreenUi();
+    }
+  }
+
+  function toggleFullscreen() {
+    if (isFullscreenActive()) {
+      exitAppFullscreen();
+      return;
+    }
+
+    requestAppFullscreen();
+  }
+
+  function syncFullscreenUi() {
+    var isGameVisible = !elements.gameScreen.hidden;
+    var available = canUseFullscreen();
+    var active = isFullscreenActive();
+
+    document.body.dataset.fullscreen = active ? "true" : "false";
+
+    if (!isGameVisible || !available) {
+      elements.fullscreenToggleButton.hidden = true;
+      scheduleViewportFit();
+      return;
+    }
+
+    elements.fullscreenToggleButton.hidden = false;
+    elements.fullscreenToggleButton.textContent = active ? "全画面をやめる" : "全画面にする";
+    elements.fullscreenToggleButton.setAttribute("aria-pressed", active ? "true" : "false");
+    scheduleViewportFit();
   }
 
   function bindPress(element, handler) {
@@ -358,6 +436,8 @@
     if (!config) {
       return;
     }
+
+    requestAppFullscreen();
 
     var chosen = choosePuzzle(config, isDaily);
     state.gameKey = gameKey;
@@ -872,6 +952,12 @@
     elements.gameScreen.hidden = showHome;
     elements.homeScreen.classList.toggle("screen-active", showHome);
     elements.gameScreen.classList.toggle("screen-active", !showHome);
+
+    if (showHome) {
+      exitAppFullscreen();
+    }
+
+    syncFullscreenUi();
     scheduleViewportFit();
     if (!showHome) {
       window.setTimeout(focusSelectedCell, 0);

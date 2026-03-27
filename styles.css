@@ -95,6 +95,7 @@ button {
   gap: 10px;
   min-height: 0;
   flex: 1;
+  position: relative;
 }
 
 .hero {
@@ -282,6 +283,29 @@ h2 {
   justify-content: space-between;
   gap: 12px;
   min-height: 0;
+  padding-top: 54px;
+}
+
+.fullscreen-toggle-button {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 4px);
+  left: 0;
+  z-index: 6;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 24px rgba(44, 80, 96, 0.18), inset 0 0 0 1px var(--line);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body[data-fullscreen="true"] .fullscreen-toggle-button {
+  background: rgba(255, 250, 240, 0.98);
 }
 
 .game-title-group {
@@ -512,6 +536,7 @@ h2 {
 
 .course-option:active,
 .difficulty-option:active,
+.fullscreen-toggle-button:active,
 .header-button:active,
 .primary-button:active,
 .secondary-button:active,
@@ -523,6 +548,7 @@ h2 {
 
 .course-option:focus-visible,
 .difficulty-option:focus-visible,
+.fullscreen-toggle-button:focus-visible,
 .header-button:focus-visible,
 .primary-button:focus-visible,
 .secondary-button:focus-visible,
@@ -606,6 +632,7 @@ body[data-orientation="landscape"] .control-column {
 
   .game-header {
     gap: 10px;
+    padding-top: 50px;
   }
 
   .game-title-group .eyebrow {
@@ -654,6 +681,13 @@ body[data-orientation="landscape"] .control-column {
     min-height: 40px;
     padding: 8px 10px;
     font-size: 0.92rem;
+  }
+
+  .fullscreen-toggle-button {
+    top: calc(env(safe-area-inset-top) + 2px);
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 0.9rem;
   }
 
   .key-button,
